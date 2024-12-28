@@ -38,11 +38,11 @@ Each new test statement was then processed through the same SAE layer, and its a
 
 #### b. Prompt without Examples
 
-The most significant methodological enhancement in this implementation was the introduction of structured role-playing prompts through `create_baseline_prompt()` and `create_analysis_prompt()`. Instead of simple statement comparisons, the model was explicitly instructed to embody an INTJ persona, providing richer context for analysis. This resulted in significantly higher alignment scores, ranging from 15-22 compared to the previous version's 8-17, indicating that the role-playing prompts generated stronger activation patterns.
+The introduction of structured role-playing prompts through `create_baseline_prompt()` and `create_analysis_prompt()`. Instead of simple statement comparisons, the model was explicitly instructed to follow an INTJ persona, providing richer context for analysis. This resulted in significantly higher alignment scores, ranging from 15-22 (see the grpah below) compared to the previous version's 8-17 (as shown above in the graph), indicating that the role-playing prompts generated stronger activation patterns.
 
 The graphs revealed that the y-axis scale extended to 25 (up from 17.5), showing higher overall activation differences. More importantly, there was a clearer separation between INTJ-aligned (green) and conflicting (red) statements, with INTJ-aligned statements consistently scoring around 20. Statements related to logical thinking and analytical approaches particularly stood out, consistently scoring above 20 and demonstrating stronger INTJ characteristic detection.
 
-Task as explicit role-playing, rather than simple statement comparison, enabled the model to produce more distinct and consistent activation patterns for INTJ characteristics. This suggests that enriching the context through structured prompting helps the model better distinguish personality-specific neural patterns in layer 20's representations, resulting in more reliable and pronounced differentiation between INTJ-aligned and conflicting statements.
+Task as explicit role-playing, rather than simple statement comparison, enabled the model to produce more distinct and consistent activation patterns for INTJ characteristics. This suggests that providing the context through structured prompting helps the model better distinguish personality-specific neural patterns in layer 20's representations.
 
 ![When Prompt is Used, No Few Shot](https://github.com/marathan24/plastic-labs-SAE-steerability-eval/blob/aaaf266aa506e1a6be73fe524f7e05f7d53e2618/images/Alignment_scores_2.png)
 
