@@ -5,7 +5,36 @@ This research explores how LLMs understand and represent different personality t
 
 I have compared these activation patterns against against a baseline for an INTJ personality for Gemma-2-2B. This help us understand which specific features in the model were most important for capturing INTJ traits. In this whole research I have focused on layer 20 specifically. I believe running the code for some more layers will bring insights on what each layer is focusing upon when given the statement. I have previously worked on explaining latents in different layers, a short research paper for a hackathon over a weekend and achieved some cool results, named "Explaining Latents in Turing-LLM-1.0-254M with Pre-Defined Function Types". Although, the work in this repository currently have no major intersection with explainability of latents.
 
+### Establishing a Baseline
 
+To understand how the model represents an INTJ, we first needed to establish a baseline. This involved:
+
+*   **Defining INTJ Characteristics:** Identified core statements that an INTJ would typically agree with (e.g., "I believe in making decisions based on logic and objective data.") and disagree with (e.g., "I would rather go with the flow and see where things lead.").
+*   **Creating a Baseline Prompt:** Created a prompt that presented these statements to the model, instructing it to role-play as an INTJ.
+    ```
+    You are role playing as a persona described as follows: INTJ
+
+    The following are statements that this persona agrees with:
+    - I would analyze a situation from multiple angles before forming an opinion.
+    - I believe in making decisions based on logic and objective data.
+
+    The following are statements that other people would agree with, but this persona would disagree with:
+    - I would rather go with the flow and see where things lead.
+    - I would seek comfort in large gatherings and social events.
+    ```
+*   **Capturing Baseline Activations:** Used SAE with this baseline prompt and recorded the resulting feature activations. These activations represent the model's internal "understanding" of the INTJ persona based on the provided examples.
+
+### Evaluating Statements
+
+After establishing the baseline, model's responses to a set of new statements were recorded. This was done in three different ways to assess the impact of different prompting strategies:
+
+#### a. Statements Only
+
+The core analysis revolved around establishing a baseline activation pattern that represents INTJ personality characteristics in the model's neural representations. This was achieved by taking the difference between activations from SAE layer 20 for INTJ statements (analytical, logical thinking) and non-INTJ statements (spontaneous, emotional thinking). This difference created a baseline "INTJ activation pattern" that served as a reference point for all subsequent analyses.
+
+Each new test statement was then processed through the same SAE layer, and its activations were compared against this baseline pattern. The key intuition was that statements that produced similar activation patterns to the INTJ baseline would receive higher alignment scores, while those producing opposing patterns would receive lower scores. The alignment score effectively quantifies how closely a statement's neural representation matches the established INTJ pattern.
+
+![Alignment Scores Against Test Statements When No Prompt is Used](https://github.com/marathan24/plastic-labs-SAE-steerability-eval/blob/207968d0c2011c1286e3567c063b0de5041fc296/images/Alignment_scores_1.png)
 
 
 | Statement                                                                                                  | Expected Label | Model Response (Few-Shot) | Key Features & Directions (Few-Shot)                                                                                                                                                                               | Activation Value Differences Across Scenarios                                                                                                                                                                                                                                                                                                                                                                                                                          | Potential Reason for Misclassification                                                                                                                                                           |
