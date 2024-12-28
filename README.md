@@ -1,9 +1,10 @@
 # Plastic-labs-SAE-steerability-eval
 
 ## Introduction
+
 This research explores how LLMs understand and represent different personality types using SAEs, specifically focusing on the INTJ personality. "Steering" - essentially guiding the model's responses through specific prompts to see how well it can steer/mould itself to this personality type. Sparse autoencoders, which are neural networks that help us peek inside the AI's "brain" by revealing which neurons activate when processing different types of information are used, think of it like having a window into the AI's thought process - we can see which parts of its neural network light up when it encounters different personality-related statements. 
 
-I have compared these activation patterns against against a baseline for an INTJ personality for Gemma-2-2B. This help us understand which specific features in the model were most important for capturing INTJ traits. In this whole research I have focused on layer 20 specifically. I believe running the code for some more layers will bring insights on what each layer is focusing upon when given the statement. I have previously worked on explaining latents in different layers, a short research paper for a hackathon over a weekend and achieved some cool results, named "Explaining Latents in Turing-LLM-1.0-254M with Pre-Defined Function Types". Although, the work in this repository currently have no major intersection with explainability of latents.
+I have compared these activation patterns against against a baseline for an INTJ personality for Gemma-2-2B. This help us understand which specific features in the model were most important for capturing INTJ traits. In this whole research I have focused on layer 20 specifically. I believe running the code for some more layers will bring insights on what each layer is focusing upon when given the statement. I have previously worked on explaining latents in different layers, a short research paper for a hackathon over a weekend and achieved some cool results, named "Explaining Latents in Turing-LLM-1.0-254M with Pre-Defined Function Types".
 
 ### Establishing a Baseline
 
