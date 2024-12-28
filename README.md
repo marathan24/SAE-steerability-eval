@@ -44,7 +44,7 @@ The graphs revealed that the y-axis scale extended to 25 (up from 17.5), showing
 
 Task as explicit role-playing, rather than simple statement comparison, enabled the model to produce more distinct and consistent activation patterns for INTJ characteristics. This suggests that enriching the context through structured prompting helps the model better distinguish personality-specific neural patterns in layer 20's representations, resulting in more reliable and pronounced differentiation between INTJ-aligned and conflicting statements.
 
-![When Prompt is Used, No Few Shot][images/Alignment_scores_2.png]
+![When Prompt is Used, No Few Shot](https://github.com/marathan24/plastic-labs-SAE-steerability-eval/blob/aaaf266aa506e1a6be73fe524f7e05f7d53e2618/images/Alignment_scores_2.png)
 
 
 
