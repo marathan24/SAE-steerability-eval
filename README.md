@@ -79,7 +79,7 @@ Rather than modifying the model’s weights through finetuning, or relying solel
   Used activation engineering technique. Instead of finetuning or purely prompt-based manipulation, a “steering vector” is computed by contrasting model activations on two sets of statements:
   - **INTJ-Aligned Statements** (e.g., prioritizing logic, analyzing multiple angles).
   - **Non-INTJ Statements** (e.g., preferring spontaneity, large social gatherings).
-  The difference in these activations forms a vector representing the “INTJ” vs. “Non-INTJ” distinction.
+  -The difference in these activations forms a vector representing the “INTJ” vs. “Non-INTJ” distinction.
 
 - **Injecting the Steering Vector**  
   For each new test statement, steering vector (scaled positively for INTJ, negatively for Non-INTJ) is added into the model’s hidden layers. By doing so, the model is nudged toward the INTJ or Non-INTJ end of the activation space—without changing its original weights.
@@ -93,9 +93,10 @@ Rather than modifying the model’s weights through finetuning, or relying solel
 - **Systematic Differences in Output**  
   While the unmodified outputs were not especially clean JSON (often repetitive or incomplete), a clear change was noticed in generation style for INTJ-targeted statements versus Non-INTJ. Even if the text was messy, the consistent difference suggests the model was responding differently once the INTJ vs. Non-INTJ steering vector was injected.
 
-**For all INTJ-agree statements**
+- **For all INTJ-agree statements**
 ```oici voici voici following following following following following following ......```
-**For all INTJ-disagree statements**
+
+- **For all INTJ-disagree statements**
 ```出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版```
 
 - **Classification-Like Effect**  
