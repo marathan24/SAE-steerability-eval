@@ -71,7 +71,7 @@ Below represents a table where the misclassified statements by Gemma-2-2B are sh
 
 ## UPDATED AS OF JANUARY 5th, 2025
 
-Rather than modifying the model’s weights through finetuning, or relying solely on discrete prompt manipulation, activation engineering works by injecting a computed steering vector into the model’s activations (the internal hidden states) during inference. This technique, sometimes referred to as ActAdd, contrasts the model’s activations on two carefully chosen sets of prompts (in our case, statements reflecting “INTJ” versus “Non-INTJ” traits). The difference of these two activation patterns becomes our steering vector, which we can then add (with a chosen scale) into the forward pass of the model for new inputs.
+Rather than modifying the model’s weights through finetuning, or relying solely on discrete prompt manipulation, activation engineering works by injecting a computed steering vector into the model’s activations (the internal hidden states) during inference. This technique, sometimes referred to as ActAdd, contrasts the model’s activations on two carefully chosen sets of prompts (in our case, statements reflecting “INTJ” versus “Non-INTJ” traits). The difference of these two activation patterns becomes our steering vector, which can be then added (with a chosen scale) into the forward pass of the model for new inputs.
 
 ### Methodology
 
@@ -85,13 +85,22 @@ Rather than modifying the model’s weights through finetuning, or relying solel
   For each new test statement, steering vector (scaled positively for INTJ, negatively for Non-INTJ) is added into the model’s hidden layers. By doing so, the model is nudged toward the INTJ or Non-INTJ end of the activation space—without changing its original weights.
 
 - **Why This Approach?**    
-  - **Interpretability** We can quickly flip the scale of the steering vector to push the model’s output in one direction or the other.  
+  - **Interpretability:** One can quickly flip the scale of the steering vector to push the model’s output in one direction or the other.  
   - **Minimal Overhead:** Only a forward pass to get activations on a handful of examples is required, plus simple vector arithmetic.
 
 ### Observations
 
 - **Systematic Differences in Output**  
-  While the unmodified outputs were not especially clean JSON (often repetitive or incomplete), we noticed a clear change in generation style for INTJ-targeted statements versus Non-INTJ. Even if the text was messy, the consistent difference suggests the model was responding differently once we injected the INTJ vs. Non-INTJ steering vector.
+  While the unmodified outputs were not especially clean JSON (often repetitive or incomplete), a clear change was noticed in generation style for INTJ-targeted statements versus Non-INTJ. Even if the text was messy, the consistent difference suggests the model was responding differently once the INTJ vs. Non-INTJ steering vector was injected.
+
+**For all INTJ-agree statements**
+```oici voici voici following following following following following following ......```
+**For all INTJ-disagree statements**
+```出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版```
 
 - **Classification-Like Effect**  
   The model’s output patterns indicated that, at some deeper representational level, it was effectively “classifying” a statement as INTJ or Non-INTJ. This did not require explicit classification labels—just the act of shifting activations in the INTJ or Non-INTJ direction.
+
+### Conclusion
+
+Overall, by injecting a difference vector derived from INTJ-versus-Non-INTJ statements, the raw outputs may not look perfectly polished, but their divergence for INTJ and Non-INTJ statements demonstrates that the model is indeed being guided toward different personality representations—all without new finetuning or extensive prompt engineering.
