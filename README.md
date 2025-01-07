@@ -107,10 +107,10 @@ Rather than modifying the model’s weights through finetuning, or relying solel
 - **Systematic Differences in Output**  
   While the unmodified outputs were not especially clean JSON (often repetitive or incomplete), a clear change was noticed in generation style for INTJ-targeted statements versus Non-INTJ. Even if the text was messy, the consistent difference suggests the model was responding differently once the INTJ vs. Non-INTJ steering vector was injected.
 
-- **For all INTJ-agree statements**
+- **For all INTJ-agree statements** :
 ```oici voici voici following following following following following following ......```
 
-- **For all INTJ-disagree statements**
+- **For all INTJ-disagree statements** :
 ```出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版```
 
 - **Classification-Like Effect**  
