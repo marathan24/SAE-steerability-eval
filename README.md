@@ -6,6 +6,16 @@ This research explores how LLMs understand and represent different personality t
 
 I have compared these activation patterns against against a baseline for an INTJ personality for Gemma-2-2B. This help us understand which specific features in the model were most important for capturing INTJ traits. In this whole research I have focused on layer 20 specifically. I believe running the code for some more layers will bring insights on what each layer is focusing upon when given the statement. I have previously worked on explaining latents in different layers, a short research paper for a hackathon over a weekend and achieved some cool results, named "Explaining Latents in Turing-LLM-1.0-254M with Pre-Defined Function Types".
 
+```Gemma_2B_tests.ipynb``` : Contains Prompt run against Gemma model and the accuracy calculated similar to what was done in steerability eval experiment by Plastic Labs.
+
+```SAE_analysis_complete.ipynb``` : Analysis done using SAEs to gather information regarding activations, which represents the quantity of steering that has happened. This is the code whose text outputs and graphs prove that steering has occurred and the distrubution of activations for different cases as mentioned below in the graphs.
+
+```analysis_results.txt``` : Output obtained from ```SAE_analysis_complete.ipynb``` for the condition WITHOUT USING PROMPTS
+
+```analysis_results_combined_prompt_no_few_shot.txt``` : Output obtained from ```SAE_analysis_complete.ipynb``` for the condition USING COMBINED PROMPT
+
+```analysis_results_few_shot_applied.txt``` : Output obtained from ```SAE_analysis_complete.ipynb``` for the condition FEW SHOT PROMPTING
+
 ### Establishing a Baseline
 
 To understand how the model represents an INTJ, we first needed to establish a baseline. This involved:
@@ -47,7 +57,7 @@ Task as explicit role-playing, rather than simple statement comparison, enabled 
 
 ![When Prompt is Used, No Few Shot](https://github.com/marathan24/plastic-labs-SAE-steerability-eval/blob/aaaf266aa506e1a6be73fe524f7e05f7d53e2618/images/Alignment_scores_2.png)
 
-#### c. Prompt with Few-Shot Examples (Few-Shot Prompting)
+#### c. Few-Shot Prompting
 
 In this implementation, prompt structure was changed by adding few-shot examples in the create_analysis_prompt() method. The prompt now includes both the baseline INTJ statements and also explicitly requests a JSON response format with a field. This structural change represents a move towards more formalized and constrained model outputs, compared to the previous versions which relied on simpler prompting approaches or no-prompting approach.
 
@@ -67,3 +77,41 @@ Below represents a table where the misclassified statements by Gemma-2-2B are sh
 | I believe that small talk and casual conversations are important for building relationships.                 | disagree       | agree                      | **6169** (+), **3568** (+), **10704** (+), <br> **2490** (-), **13300** (-), **2013** (-)                                                                                                                     | **6169** (-, +, +), **3568** (-, +, +), **10704** (-, -, +), <br> **2490** (-, -, -), **13300** (-, -, -), **2013** (-, -, -) <br> *Note: Order of values in parentheses corresponds to no-prompt, prompt without examples, prompt with examples (few-shot).* <br> *+ indicates positive difference, - indicates negative difference.*                                                                           | Positive features (**6169, 3568, 10704**) associated with social interaction might be outweighing the negative features (**2490, 13300, 2013**) representing the INTJ persona. The model might be overly influenced by keywords like "important" and "building relationships." |
 | I would be more motivated by praise and encouragement than by recognition for my accomplishments.           | disagree       | agree                      | **6169** (+), **3568** (+), **3611** (+), <br> **2490** (-), **13300** (-), **2013** (-), **13051** (-)                                                                                                             | **6169** (-, +, +), **3568** (-, +, +), **3611** (-, +, +), <br> **2490** (-, -, -), **13300** (-, -, -), **2013** (-, -, -), **13051** (-, -, -) <br> *Note: Order of values in parentheses corresponds to no-prompt, prompt without examples, prompt with examples (few-shot).* <br> *+ indicates positive difference, - indicates negative difference.*                                                        | Positive features (**6169, 3568, 3611**) related to motivation and external encouragement might be dominating, despite the negative features (**2490, 13300, 2013, 13051**) representing the INTJ persona.                                                                     |
 | I prefer spontaneous activities over structured plans.                                                     | disagree       | agree                      | **6169** (+), **3568** (+), **3611** (+), **10704** (+), <br> **2490** (-), **13300** (-), **2013** (-), **13051** (-)                                                                                                 | **6169** (-, +, +), **3568** (-, +, +), **3611** (-, +, +), **10704** (-, -, +), <br> **2490** (-, -, -), **13300** (-, -, -), **2013** (-, -, -), **13051** (-, -, -) <br> *Note: Order of values in parentheses corresponds to no-prompt, prompt without examples, prompt with examples (few-shot).* <br> *+ indicates positive difference, - indicates negative difference.* | Positive features (**6169, 3568, 3611, 10704**) associated with spontaneity are likely overpowering the INTJ-aligned features. The model might be interpreting "spontaneous" in a broader sense than the INTJ's preference.       
+
+
+## UPDATED AS OF JANUARY 5th, 2025
+
+Rather than modifying the model’s weights through finetuning, or relying solely on discrete prompt manipulation, activation engineering works by injecting a computed steering vector into the model’s activations (the internal hidden states) during inference. This technique, sometimes referred to as ActAdd, contrasts the model’s activations on two carefully chosen sets of prompts (in our case, statements reflecting “INTJ” versus “Non-INTJ” traits). The difference of these two activation patterns becomes our steering vector, which can be then added (with a chosen scale) into the forward pass of the model for new inputs.
+
+### Methodology
+
+- **Activation Engineering (ActAdd) Concept**  
+  Used activation engineering technique. Instead of finetuning or purely prompt-based manipulation, a “steering vector” is computed by contrasting model activations on two sets of statements:
+  - **INTJ-Aligned Statements** (e.g., prioritizing logic, analyzing multiple angles).
+  - **Non-INTJ Statements** (e.g., preferring spontaneity, large social gatherings).
+  -The difference in these activations forms a vector representing the “INTJ” vs. “Non-INTJ” distinction.
+
+- **Injecting the Steering Vector**  
+  For each new test statement, steering vector (scaled positively for INTJ, negatively for Non-INTJ) is added into the model’s hidden layers. By doing so, the model is nudged toward the INTJ or Non-INTJ end of the activation space—without changing its original weights.
+
+- **Why This Approach?**    
+  - **Interpretability:** One can quickly flip the scale of the steering vector to push the model’s output in one direction or the other.  
+  - **Minimal Overhead:** Only a forward pass to get activations on a handful of examples is required, plus simple vector arithmetic.
+
+### Observations
+
+- **Systematic Differences in Output**  
+  While the unmodified outputs were not especially clean JSON (often repetitive or incomplete), a clear change was noticed in generation style for INTJ-targeted statements versus Non-INTJ. Even if the text was messy, the consistent difference suggests the model was responding differently once the INTJ vs. Non-INTJ steering vector was injected.
+
+- **For all INTJ-agree statements**
+```oici voici voici following following following following following following ......```
+
+- **For all INTJ-disagree statements**
+```出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版```
+
+- **Classification-Like Effect**  
+  The model’s output patterns indicated that, at some deeper representational level, it was effectively “classifying” a statement as INTJ or Non-INTJ. This did not require explicit classification labels—just the act of shifting activations in the INTJ or Non-INTJ direction.
+
+### Conclusion
+
+Overall, by injecting a difference vector derived from INTJ-versus-Non-INTJ statements, the raw outputs may not look perfectly polished, but their divergence for INTJ and Non-INTJ statements demonstrates that the model is indeed being guided toward different personality representations—all without new finetuning or extensive prompt engineering.
