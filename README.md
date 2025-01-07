@@ -6,6 +6,16 @@ This research explores how LLMs understand and represent different personality t
 
 I have compared these activation patterns against against a baseline for an INTJ personality for Gemma-2-2B. This help us understand which specific features in the model were most important for capturing INTJ traits. In this whole research I have focused on layer 20 specifically. I believe running the code for some more layers will bring insights on what each layer is focusing upon when given the statement. I have previously worked on explaining latents in different layers, a short research paper for a hackathon over a weekend and achieved some cool results, named "Explaining Latents in Turing-LLM-1.0-254M with Pre-Defined Function Types".
 
+```Gemma_2B_tests.ipynb``` : Contains Prompt run against Gemma model and the accuracy calculated similar to what was done in steerability eval experiment by Plastic Labs.
+
+```SAE_analysis_complete.ipynb``` : Analysis done using SAEs to gather information regarding activations, which represents the quantity of steering that has happened. This is the code whose text outputs and graphs prove that steering has occurred and the distrubution of activations for different cases as mentioned below in the graphs.
+
+```analysis_results.txt``` : Output obtained from ```SAE_analysis_complete.ipynb``` for the condition WITHOUT USING PROMPTS
+
+```analysis_results_combined_prompt_no_few_shot.txt``` : Output obtained from ```SAE_analysis_complete.ipynb``` for the condition USING COMBINED PROMPT
+
+```analysis_results_few_shot_applied.txt``` : Output obtained from ```SAE_analysis_complete.ipynb``` for the condition FEW SHOT PROMPTING
+
 ### Establishing a Baseline
 
 To understand how the model represents an INTJ, we first needed to establish a baseline. This involved:
@@ -47,7 +57,7 @@ Task as explicit role-playing, rather than simple statement comparison, enabled 
 
 ![When Prompt is Used, No Few Shot](https://github.com/marathan24/plastic-labs-SAE-steerability-eval/blob/aaaf266aa506e1a6be73fe524f7e05f7d53e2618/images/Alignment_scores_2.png)
 
-#### c. Prompt with Few-Shot Examples (Few-Shot Prompting)
+#### c. Few-Shot Prompting
 
 In this implementation, prompt structure was changed by adding few-shot examples in the create_analysis_prompt() method. The prompt now includes both the baseline INTJ statements and also explicitly requests a JSON response format with a field. This structural change represents a move towards more formalized and constrained model outputs, compared to the previous versions which relied on simpler prompting approaches or no-prompting approach.
 
