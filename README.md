@@ -83,6 +83,10 @@ Below represents a table where the misclassified statements by Gemma-2-2B are sh
 
 Rather than modifying the model’s weights through finetuning, or relying solely on discrete prompt manipulation, activation engineering works by injecting a computed steering vector into the model’s activations (the internal hidden states) during inference. This technique, sometimes referred to as ActAdd, contrasts the model’s activations on two carefully chosen sets of prompts (in our case, statements reflecting “INTJ” versus “Non-INTJ” traits). The difference of these two activation patterns becomes our steering vector, which can be then added (with a chosen scale) into the forward pass of the model for new inputs.
 
+```steering_vectors/steering_vectors_gemma.ipynb``` : Contains the complete relevant code regarding steering.
+
+```steering_vectors/responses_vector_steering.txt``` : Output obtained from ```steering_vectors/steering_vectors_gemma.ipynb``` when the steered Gemma-2B model was run. 
+
 ### Methodology
 
 - **Activation Engineering (ActAdd) Concept**  
@@ -103,10 +107,10 @@ Rather than modifying the model’s weights through finetuning, or relying solel
 - **Systematic Differences in Output**  
   While the unmodified outputs were not especially clean JSON (often repetitive or incomplete), a clear change was noticed in generation style for INTJ-targeted statements versus Non-INTJ. Even if the text was messy, the consistent difference suggests the model was responding differently once the INTJ vs. Non-INTJ steering vector was injected.
 
-- **For all INTJ-agree statements**
+- **For all INTJ-agree statements** :
 ```oici voici voici following following following following following following ......```
 
-- **For all INTJ-disagree statements**
+- **For all INTJ-disagree statements** :
 ```出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版```
 
 - **Classification-Like Effect**  
