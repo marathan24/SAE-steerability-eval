@@ -107,6 +107,9 @@ Rather than modifying the model’s weights through finetuning, or relying solel
 - **Layer 16 and Layer 20**  
     When applied the method of steering vectors to these layers, it nearly matched the performance of Gemma 2B steering using few-shot prompting. The overall accuracy for Gemma 2B using few-shot prompting was around 86% , whereas using the vector-steering method the accuracy achieved is 81%. Also this is the test for one persona only. Plastic Labs has created a small set of synthetic data for their persona experiments. One may check it on [platic-labs/steerability-eval](https://github.com/plastic-labs/steerability-eval)
 
+- **Layer 18**  
+    When applied the method of steering vectors to this layer, the model doesn't yield the desired performance. The overall acuracy has been below 60% and model has been unable to output proper response at times.
+ 
 ### Conclusion
 
 This repository demonstrates an implementation of model steering through activation vector manipulation in language models. The core technique involves computing directional vectors between different behavioral patterns (in this case, INTJ vs non-INTJ reasoning styles) and using these vectors to influence the model's internal representations during inference.
