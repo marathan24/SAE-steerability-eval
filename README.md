@@ -102,20 +102,17 @@ Rather than modifying the model’s weights through finetuning, or relying solel
   - **Interpretability:** One can quickly flip the scale of the steering vector to push the model’s output in one direction or the other.  
   - **Minimal Overhead:** Only a forward pass to get activations on a handful of examples is required, plus simple vector arithmetic.
 
-### Observations
+### Observations (As of January 10th, 2025)
 
-- **Systematic Differences in Output**  
-  While the unmodified outputs were not especially clean JSON (often repetitive or incomplete), a clear change was noticed in generation style for INTJ-targeted statements versus Non-INTJ. Even if the text was messy, the consistent difference suggests the model was responding differently once the INTJ vs. Non-INTJ steering vector was injected.
-
-- **For all INTJ-agree statements** :
-```oici voici voici following following following following following following ......```
-
-- **For all INTJ-disagree statements** :
-```出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版年出版```
-
-- **Classification-Like Effect**  
-  The model’s output patterns indicated that, at some deeper representational level, it was effectively “classifying” a statement as INTJ or Non-INTJ. This did not require explicit classification labels—just the act of shifting activations in the INTJ or Non-INTJ direction.
+- **Layer 16 and Layer 20**  
+    When applied the method of steering vectors to these layers, it nearly matched the performance of Gemma 2B steering using few-shot prompting. The overall accuracy for Gemma 2B using few-shot prompting was around 86% , whereas using the vector-steering method the accuracy achieved is 81%. Also this is the test for one persona only. Plastic Labs has created a small set of synthetic data for their persona experiments. One may check it on [platic-labs/steerability-eval](https://github.com/plastic-labs/steerability-eval)
 
 ### Conclusion
 
-Overall, by injecting a difference vector derived from INTJ-versus-Non-INTJ statements, the raw outputs may not look perfectly polished, but their divergence for INTJ and Non-INTJ statements demonstrates that the model is indeed being guided toward different personality representations—all without new finetuning or extensive prompt engineering.
+This repository demonstrates an implementation of model steering through activation vector manipulation in language models. The core technique involves computing directional vectors between different behavioral patterns (in this case, INTJ vs non-INTJ reasoning styles) and using these vectors to influence the model's internal representations during inference.
+
+By capturing the differential activation patterns between analytical and intuitive thinking styles, we can systematically direct the model's behavior in desired directions, effectively modifying the model's processing pipeline without fine-tuning.
+
+Experiments with Google's Gemma-2b model demonstrate that this approach can successfully guide the model toward more structured, analytical responses characteristic of INTJ personality patterns. The steering vectors are computed once and can be reused across multiple inference passes, making this an efficient approach for behavioral control.
+
+This also shows the promising directions for runtime behavior modification of language models without the need for traditional fine-tuning or prompt engineering. The technique could potentially be extended to other behavioral aspects or reasoning patterns [platic-labs/steerability-eval](https://github.com/plastic-labs/steerability-eval).
