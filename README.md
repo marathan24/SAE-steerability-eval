@@ -1,4 +1,4 @@
-# Plastic-labs-SAE-steerability-eval
+# SAE-steerability-eval
 
 ## Introduction
 
@@ -119,3 +119,8 @@ By capturing the differential activation patterns between analytical and intuiti
 Experiments with Google's Gemma-2b model demonstrate that this approach can successfully guide the model toward more structured, analytical responses characteristic of INTJ personality patterns. The steering vectors are computed once and can be reused across multiple inference passes, making this an efficient approach for behavioral control.
 
 This also shows the promising directions for runtime behavior modification of language models without the need for traditional fine-tuning or prompt engineering. The technique could potentially be extended to other behavioral aspects or reasoning patterns [platic-labs/steerability-eval](https://github.com/plastic-labs/steerability-eval).
+
+### References
+
+1. Anastasia Borovykh's research
+2. PLASTIC LABS steerability-eval
