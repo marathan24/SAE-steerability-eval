@@ -124,3 +124,7 @@ This also shows the promising directions for runtime behavior modification of la
 
 1. Anastasia Borovykh's research
 2. PLASTIC LABS steerability-eval
+
+FUTURE WORKS:
+
+Run the experiments for different layers and different scales and construct a graph and observe whether the last layers are more aligned to distinction of personas or not.
